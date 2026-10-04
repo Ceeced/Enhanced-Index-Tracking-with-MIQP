@@ -9,55 +9,21 @@ The implementation is based on the portfolio optimisation model presented by GnÃ
 ## Methodology
 
 The portfolio is constructed by minimising **Tracking Error Variance (TEV)** relative to the SMI.
-
-TEV measures the variance of the difference between the portfolio weights and the corresponding index weights.
-
-The optimisation model follows the formulation of GnÃ¤gi and Strub (2020). Since all SMI constituents are considered in the optimisation model in the current implementation (\(I=U\)), the set \(U\setminus I\) is empty. Consequently, the second and third terms of the objective function evaluate to zero in the resulting optimisation problem.
-
-### Objective Function
+TEV measures the variance of the difference between the portfolio weights and the corresponding index weights:
 
 $$
-\begin{aligned}
-\min \quad
-& \sum_{i,j \in I} \sigma_{ij}
-\left(\frac{P_{iT}X_i}{C}-w_i^I\right)
-\left(\frac{P_{jT}X_j}{C}-w_j^I\right) \\
-&-2\sum_{i\in I}\sum_{j\in U\setminus I}\sigma_{ij}
-\left(\frac{P_{iT}X_i}{C}w_j^I-w_i^Iw_j^I\right) \\
-&+\sum_{i,j\in U\setminus I}\sigma_{ij}w_i^Iw_j^I
-\end{aligned}
+TEV =
+\sum_{i \in U}\sum_{j \in U}
+\sigma_{ij}
+\left(
+\frac{P_{iT}X_i}{C} - w_i^I
+\right)
+\left(
+\frac{P_{jT}X_j}{C} - w_j^I
+\right)
 $$
 
-### Notation
-
-**Sets**
-
-| Symbol | Description |
-|---|---|
-| \(U\) | Set of stocks in the index |
-| \(I\) | Set of stocks considered in the optimisation model, \(I \subseteq U\) |
-
-**Parameters**
-
-| Symbol | Description |
-|---|---|
-| \(T\) | Time at which the EITP is solved (optimisation date) |
-| \(n\) | Number of stocks in the index |
-| \(k\) | Maximum portfolio cardinality (maximum number of stocks) |
-| \(P_{it}\) | Price of stock \(i \in U\) at time \(t \in \{1,\ldots,T\}\) |
-| \(C\) | Investment budget |
-| \(\varepsilon_i / \delta_i\) | Minimum / maximum weight of stock \(i \in U\), if included in the portfolio |
-| \(w_i^I\) | Weight of stock \(i \in U\) in the index |
-| \(\bar{r}_i\) | Expected return of stock \(i \in U\) |
-| \(\alpha\) | Prescribed minimum expected excess return |
-| \(\sigma_{ij}\) | Covariance between the returns of stocks \(i \in U\) and \(j \in U\) |
-
-**Decision variables**
-
-| Symbol | Description |
-|---|---|
-| \(X_i\) | Number of units of stock \(i \in I\) held in the portfolio |
-| \(z_i\) | Binary variable equal to 1 if \(X_i > 0\), and 0 otherwise (\(i \in I\)) |
+where $\sigma_{ij}$ denotes the covariance between the returns of stocks $i$ and $j$, $P_{iT}$ the stock price at the optimisation date, $X_i$ the number of shares held, $C$ the available investment budget and $w_i^I$ the corresponding SMI weight.
 
 The optimisation model incorporates the following constraints:
 
