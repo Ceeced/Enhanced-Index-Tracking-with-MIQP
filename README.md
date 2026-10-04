@@ -9,6 +9,7 @@ The implementation is based on the portfolio optimisation model presented by Gn√
 ## Methodology
 
 The portfolio is constructed by minimising **Tracking Error Variance (TEV)** relative to the SMI.
+
 TEV measures the variance of the difference between the portfolio weights and the corresponding index weights:
 
 $$
@@ -22,6 +23,8 @@ TEV =
 \frac{P_{jT}X_j}{C} - w_j^I
 \right)
 $$
+
+where $\sigma_{ij}$ denotes the covariance between the returns of stocks $i$ and $j$, $P_{iT}$ the stock price at the optimisation date, $X_i$ the number of shares held, $C$ the available investment budget and $w_i^I$ the corresponding SMI weight.
 
 The optimisation model incorporates the following constraints:
 
